@@ -23,6 +23,3 @@ def KNN(x_train,x_test,y_train,y_test):
 
 
 
-x_test_norm,x_train_norm,y_train,y_test= Input.main()
-y_pred = MLR(x_train_norm,x_test_norm,y_train,y_test)
-t_pred = KNN(x_train_norm,x_test_norm,y_train,y_test)
