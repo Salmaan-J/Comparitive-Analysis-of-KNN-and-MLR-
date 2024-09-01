@@ -1,8 +1,6 @@
 #########Imports##########
 import sqlite3
-import mysql.connector
-import sklearn
-import numpy
+import sys
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 import os
@@ -10,24 +8,26 @@ import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
-#import seaborn as sns
 ################################
 ### Global Variables###########
 
 ################ ###################
 ###### DATA INPUT ##########
-def readcsvpanda():
-    file_path = 'Dataset/Temp_dataset.csv'
-
+def readcsvpanda():  
+    try:
+        file_path = 'Dataset/Temp_dataset.csv'
         # Read the CSV file, 
-    df = pd.read_csv(file_path)
+        df = pd.read_csv(file_path)
+    except Exception as e:
+            # Catch issue with file naming.
+            print(f"Issue when  attempting to read files {e}")
+            sys.exit(1) #gracefull exit
 
-        # Clean the first column name if it contains wierd name on file
-    df.columns = df.columns.str.replace('ï»¿timestamp', 'timestamp')
-
+       
+    df.columns = df.columns.str.replace('ï»¿timestamp', 'timestamp') # Clean the first column name if it contains wierd name on file
         # Drop the target column and convert the remaining columns to float
     x = df.drop(columns=['Basel Precipitation Total'])
-    y = df['Basel Precipitation Total'].astype(float)
+    y = df['Basel Precipitation Total'].astype(float) #convert y to float and place in its own List
         # Columns to convert to float
     columns_to_convert = [
         'Basel Temperature [2 m elevation corrected]',
@@ -36,20 +36,20 @@ def readcsvpanda():
         'Basel Wind Direction [800 mb]',
         'Basel Shortwave Radiation']
 
-        # Convert the selected columns to float
+        # Convert the X columns to float
     x[columns_to_convert] = x[columns_to_convert].astype(float)
-        # Print the column names and data types to check
-        # Testing : print(x.columns)print(x.dtypes)print(y.dtypes)
+        
+        #Testing : print(x.columns)print(x.dtypes)print(y.dtypes)# Print the column names and data types to check
     return x, y
 
 
 def filter_dataframe(x): 
-    #This tool aims to improve the interactive nature of this model
+    #This aims to improve the interactive nature of this model
     added =[] #using to identify what fields should go into the dataset
-    x_edit=pd.DataFrame()
+    x_edit=pd.DataFrame() #new Dataset to store edited Dataset.
     print("\nSelect a fields to train model on:")# First line
     while True:
-        print(added)
+        print(added)#display whats added
         print("1. Basel Temperature [2 m elevation corrected]")
         print("2. Basel Relative Humidity [2 m]")
         print("3. Basel Wind Speed [800 mb]")
@@ -57,8 +57,9 @@ def filter_dataframe(x):
         print("5. Basel Shortwave Radiation")
         print("6. Done")
         choice = input("Enter your choice (1-6): ")
-        #here  I am choosing the option to improve data data engineering by allowing on the fly data limiting
-        if choice == '1' and 'Basel Temperature [2 m elevation corrected]' not in added: #ensure duplicate values are not inseted into the model
+        #I am choosing the option to improve data data engineering by allowing on the fly 
+        #ensure duplicate values are not inseted into the model
+        if choice == '1' and 'Basel Temperature [2 m elevation corrected]' not in added: 
             added.append('Basel Temperature [2 m elevation corrected]')
 
         elif choice == '2' and 'Basel Relative Humidity [2 m]' not in added :
@@ -88,8 +89,7 @@ def filter_dataframe(x):
         x_edit=x[added]
     else:
         print("No Fields were selected.")
-
-
+        sys.exit("Issue splitting the file")
     return x_edit
 ###################################################################
 ##################### DATA PREPROCESSING ###############################
@@ -126,7 +126,7 @@ def datacleaningV2(x, y, balance):
 
     # Determine the number of samples to balance the dataset. Doing this can help me build the ability to change this while testing in future
     # Note this section is where we start splitting between rain and no Rain, Then reconstruct the dataset with a balance or bias towards rain or no rain. Might use another method
-    # Iterate over the target Series to split data UPDATE************* was using an iterative method that was extremely bad and slow. 
+    # Iterate over the target Series to split data UPDATE************* was using an iterative method that was  bad and slow. 
     # much more efficient. Splits with row number
     rain_checker = y > 0  # This uses boolean indexing to compare values within the series Y and return the index. Taking out of the existing frame then pushing it to a new frame.
     norain_checker = y == 0
@@ -138,16 +138,12 @@ def datacleaningV2(x, y, balance):
     # Creating a balanced dataset to test the model for rain.
     # Create an edit to the below that allows the user to place 0-1 that allows the user to indicate if bias to rain or bias to no rain.
     sample_size = len(y_rain)
-    sample_size = sample_size - math.floor((sample_size / 100) * 60)
-    print(sample_size)
-    print(len(y_rain))
+    sample_size = sample_size - math.floor((sample_size / 100) * 60)# allowing me to create differnt size dataset 
+   # print(sample_size)
+   # print(len(y_rain))
 
-    if len(y_rain) < len(y_norain):
-        x_norain_balanced = x_norain.sample(n=sample_size, random_state=1)
-        y_norain_balanced = y_norain.loc[x_norain_balanced.index]
-    else:
-        x_norain_balanced = x_norain.sample(n=sample_size, random_state=1)
-        y_norain_balanced = y_norain.loc[x_norain_balanced.index]
+    x_norain_balanced = x_norain.sample(n=sample_size, random_state=1)
+    y_norain_balanced = y_norain.loc[x_norain_balanced.index]
 
     x_balanced = pd.concat([x_rain, x_norain_balanced])
     y_balanced = pd.concat([y_rain, y_norain_balanced])
@@ -172,10 +168,6 @@ def datasplt(size,seed, x, y):
     seed=42 #hardcode for now Reason added multiple input is for easier management.
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size, random_state=seed) #state = seed of 42:  70/30 split
     return x_train, x_test, y_train, y_test
-
-
-def deduplicate(x,y):
-    print(x.duplicated())
 
 
 ###########################
@@ -234,13 +226,11 @@ def dataplot(x,y):
     plt.tight_layout()
     plt.show()
 
+def deduplicate(x,y):
+    print(x.duplicated())
 ###################### Error Handling for input####################
                        #########################
-def errorclass(value):
-    if value==1:
-        print("Invalid Size seleceted")
-    if value==2:
-        print("Missing values in")
+
 
 
 
@@ -333,15 +323,3 @@ def main():
     return x_test_norm,x_train_norm,y_train,y_test
 
 
-#main()
-
-def testing():
-    x,y= readcsvpanda()
-    print(x)
-    x_y =filter_dataframe(x)
-    print(x_y)
-    #x,y=datacleaningV2(x,y,10)
-    #x_train, x_test, y_train, y_test= datasplt(0.7,42,x,y)
-    #x_test,x_train = datanormilizations(x_train,x_test)
-    #print(x_train)
-main()
