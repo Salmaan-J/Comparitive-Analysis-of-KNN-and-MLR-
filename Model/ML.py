@@ -31,6 +31,26 @@ def KNN(x_train,x_test,y_train,y_test):
     return y_pred
 
 
+def loadmodel(type):
+    if type ==1:
+        model_folder_path = ''  # Specify the folder path where you want to save the model
+        os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
+        model_file_path = os.path.join(model_folder_path, 'KNN.pkl')  # Specify the file path and name
+        KNN = joblib.load(model_file_path)
+        return KNN
+    elif type == 2:
+        # Assuming 'knn' is your trained KNeighborsClassifier model
+        model_folder_path = ''  # Specify the folder path where you want to save the model
+        os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
+        model_file_path = os.path.join(model_folder_path, 'MLR.pkl')  # Specify the file path and name
+        MLR = joblib.load(model_file_path)
+        return MLR
+    return "NULL"
+
+
+
 def main():
     x_test_norm,x_train_norm,y_train,y_test=Input.main()
     y_pred = MLR(x_test_norm,x_train_norm,y_train,y_test)
+
+main()

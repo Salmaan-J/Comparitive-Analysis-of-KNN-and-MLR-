@@ -99,8 +99,6 @@ def datacleaningV2(x, y, balance):
     # Allows API control to allow for finer control and easier to test
 
     # Initializations
-    x_null = x.isnull().sum()
-    y_null = y.isnull().sum()
     #X values
     x_norain = pd.DataFrame(columns=x.columns)
     x_norain_balanced = pd.DataFrame(columns=x.columns)
@@ -111,8 +109,9 @@ def datacleaningV2(x, y, balance):
     y_norain_balanced = pd.Series(dtype='float64', name='Basel Precipitation Total')
     y_norain = pd.Series(dtype='float64', name='Basel Precipitation Total')
     y_rain = pd.Series(dtype='float64', name='Basel Precipitation Total')
-    k = 0  # Used for debugging 
-
+    #k = 0  # Used for debugging 
+    x_null = x.isnull().sum()
+    y_null = y.isnull().sum()
     # Execution
     # Calculate the number of null values in each column of x
     all_zero = (x_null == 0).all()
@@ -123,7 +122,6 @@ def datacleaningV2(x, y, balance):
     if not all_zero:
         print("Some columns in the Y dataframe have missing values.")
         return "Check console"
-
     # Determine the number of samples to balance the dataset. Doing this can help me build the ability to change this while testing in future
     # Note this section is where we start splitting between rain and no Rain, Then reconstruct the dataset with a balance or bias towards rain or no rain. Might use another method
     # Iterate over the target Series to split data UPDATE************* was using an iterative method that was  bad and slow. 
@@ -138,9 +136,9 @@ def datacleaningV2(x, y, balance):
     # Creating a balanced dataset to test the model for rain.
     # Create an edit to the below that allows the user to place 0-1 that allows the user to indicate if bias to rain or bias to no rain.
     sample_size = len(y_rain)
-    sample_size = sample_size - math.floor((sample_size / 100) * 60)# allowing me to create differnt size dataset 
-   # print(sample_size)
-   # print(len(y_rain))
+    sample_size = sample_size - math.floor((sample_size / 100) * balance)# allowing me to create differnt size dataset 
+    print(sample_size)
+    print(len(y_rain))
 
     x_norain_balanced = x_norain.sample(n=sample_size, random_state=1)
     y_norain_balanced = y_norain.loc[x_norain_balanced.index]
@@ -148,16 +146,14 @@ def datacleaningV2(x, y, balance):
     x_balanced = pd.concat([x_rain, x_norain_balanced])
     y_balanced = pd.concat([y_rain, y_norain_balanced])
     #x_balanced = x_balanced.drop(columns=['timestamp']) #Keeping here for now as Data filtering removes timestamps. Might add back later
+    # this section needs to be looked at as you are taking the no rain out and not adding rain.
+    
     return x_balanced, y_balanced
 
 
 def datanormilizations(x_train,x_test):
 
 # Feature Normalization
-  #  x_train1 = [row[1:] for row in x_train]  # Remove the first column from each row in the training data First row is date and time
-#   for i in x_train1:
-    #       print(i)
-    #x_test1 = [row[1:] for row in x_test]  # Remove the first column from each row in the testing data
 
     scaler = MinMaxScaler()  # Initialize the MinMaxScaler for normalization
     x_train_norm = scaler.fit_transform(x_train)  # Fit the scaler on the training data and transform it
@@ -231,7 +227,7 @@ def deduplicate(x,y):
 ###################### Error Handling for input####################
                        #########################
 
-
+#switched to handling in function, No recurring error requires issue function
 
 
 
@@ -273,40 +269,6 @@ def readfromDB():
     conn.close()
 
     return "success"
-
-####################################################
-##############MODEL SAVING##########################
-def savemodel(model, type):
-    if type ==1:
-        # Assuming 'knn' is your trained KNeighborsClassifier model
-        model_folder_path = ''  # Specify the folder path where you want to save the model
-        os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
-        model_file_path = os.path.join(model_folder_path, 'KNN.pkl')  # Specify the file path and name
-        joblib.dump(model, model_file_path)
-        return "Sucess"
-    elif type == 2:
-        # Assuming 'knn' is your trained KNeighborsClassifier model
-        model_folder_path = ''  # Specify the folder path where you want to save the model
-        os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
-        model_file_path = os.path.join(model_folder_path, 'MLR.pkl')  # Specify the file path and name
-        joblib.dump(model, model_file_path)
-        return "Sucess"
-    return "False"
-def loadmodel(type):
-    if type ==1:
-        model_folder_path = ''  # Specify the folder path where you want to save the model
-        os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
-        model_file_path = os.path.join(model_folder_path, 'KNN.pkl')  # Specify the file path and name
-        KNN = joblib.load(model_file_path)
-        return KNN
-    elif type == 2:
-        # Assuming 'knn' is your trained KNeighborsClassifier model
-        model_folder_path = ''  # Specify the folder path where you want to save the model
-        os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
-        model_file_path = os.path.join(model_folder_path, 'MLR.pkl')  # Specify the file path and name
-        MLR = joblib.load(model_file_path)
-        return MLR
-    return "NULL"
 
 
 
