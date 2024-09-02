@@ -1,11 +1,10 @@
 #Import Modules where they are coded. Reason For Split to manage time and tasks
-from Model import API
+from app import app
 
-server  = API.server
+
+
+
 
 if __name__=='__main__':
-    server.run(debug=True)
-
-
-
+    app.run(debug=True)
 

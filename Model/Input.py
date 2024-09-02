@@ -317,7 +317,6 @@ def main():
     x,y= readcsvpanda()
     x,y=datacleaningV2(x,y,50)
     x=filter_dataframe(x)
-    deduplicate(x,y)
     x_train, x_test, y_train, y_test= datasplt(0.7,42,x,y)
     x_test_norm,x_train_norm = datanormilizations(x_train,x_test)
     return x_test_norm,x_train_norm,y_train,y_test
