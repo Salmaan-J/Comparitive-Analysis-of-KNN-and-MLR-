@@ -3,8 +3,6 @@ import sqlite3
 import sys
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-import os
-import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
@@ -38,7 +36,9 @@ def readcsvpanda():
 
         # Convert the X columns to float
     x[columns_to_convert] = x[columns_to_convert].astype(float)
-        
+    print("ReadCSV")
+    print(len(x)) 
+    print(len(y)) 
         #Testing : print(x.columns)print(x.dtypes)print(y.dtypes)# Print the column names and data types to check
     return x, y
 
@@ -135,10 +135,11 @@ def datacleaningV2(x, y, balance):
 
     # Creating a balanced dataset to test the model for rain.
     # Create an edit to the below that allows the user to place 0-1 that allows the user to indicate if bias to rain or bias to no rain.
+   # print("data Cleaning")
     sample_size = len(y_rain)
+    #print(sample_size)
     sample_size = sample_size - math.floor((sample_size / 100) * balance)# allowing me to create differnt size dataset 
-    print(sample_size)
-    print(len(y_rain))
+   # print("data Cleaning") print(sample_size)  print(len(y_rain))
 
     x_norain_balanced = x_norain.sample(n=sample_size, random_state=1)
     y_norain_balanced = y_norain.loc[x_norain_balanced.index]
@@ -147,7 +148,6 @@ def datacleaningV2(x, y, balance):
     y_balanced = pd.concat([y_rain, y_norain_balanced])
     #x_balanced = x_balanced.drop(columns=['timestamp']) #Keeping here for now as Data filtering removes timestamps. Might add back later
     # this section needs to be looked at as you are taking the no rain out and not adding rain.
-    
     return x_balanced, y_balanced
 
 
