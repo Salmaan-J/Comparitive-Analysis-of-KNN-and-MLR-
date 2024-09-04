@@ -9,7 +9,6 @@ with open('app\config.txt','r') as file:
 @app.route('/api/update')
 
 def update(): #test for now sending to homepage HTML.... TO swap with Get or another method
-    
     return jsonify("data")
 
 

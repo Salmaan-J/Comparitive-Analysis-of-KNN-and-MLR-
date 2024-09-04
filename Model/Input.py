@@ -36,9 +36,9 @@ def readcsvpanda():
 
         # Convert the X columns to float
     x[columns_to_convert] = x[columns_to_convert].astype(float)
-    print("ReadCSV")
-    print(len(x)) 
-    print(len(y)) 
+    print("ReadCSV complete")
+    #print(len(x)) 
+    #print(len(y)) 
         #Testing : print(x.columns)print(x.dtypes)print(y.dtypes)# Print the column names and data types to check
     return x, y
 
@@ -94,10 +94,17 @@ def filter_dataframe(x):
 ###################################################################
 ##################### DATA PREPROCESSING ###############################
 
-def datacleaningV2(x, y, balance):
+def datacleaningV2(x, y):
     # THE goal of this class is to allow me to balance the dataset according to either rain or no rain.
     # Allows API control to allow for finer control and easier to test
-
+    while True:
+        try:
+            print("\nInsert the percentage of no rain in the dataset. Where 100 is half rain and half no rain.")
+            balance = input()
+            balance = int(balance)
+            break
+        except ValueError:
+            print("\nInvalid input. Please enter an integer.")
     # Initializations
     #X values
     x_norain = pd.DataFrame(columns=x.columns)
@@ -148,6 +155,7 @@ def datacleaningV2(x, y, balance):
     y_balanced = pd.concat([y_rain, y_norain_balanced])
     #x_balanced = x_balanced.drop(columns=['timestamp']) #Keeping here for now as Data filtering removes timestamps. Might add back later
     # this section needs to be looked at as you are taking the no rain out and not adding rain.
+    print("Complete Data Cleaning")
     return x_balanced, y_balanced
 
 
@@ -158,11 +166,13 @@ def datanormilizations(x_train,x_test):
     scaler = MinMaxScaler()  # Initialize the MinMaxScaler for normalization
     x_train_norm = scaler.fit_transform(x_train)  # Fit the scaler on the training data and transform it
     x_test_norm = scaler.transform(x_test)  # Transform the testing data using the already fitted scaler
+    print("Complete Data Normilization")
     return x_test_norm, x_train_norm  # Return the normalized testing and training data
 
 def datasplt(size,seed, x, y):
     seed=42 #hardcode for now Reason added multiple input is for easier management.
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size, random_state=seed) #state = seed of 42:  70/30 split
+    print("Complete Data Splitting")
     return x_train, x_test, y_train, y_test
 
 
@@ -277,10 +287,11 @@ def readfromDB():
 
 def main():
     x,y= readcsvpanda()
-    x,y=datacleaningV2(x,y,50)
+    x,y=datacleaningV2(x,y)
     x=filter_dataframe(x)
     x_train, x_test, y_train, y_test= datasplt(0.7,42,x,y)
     x_test_norm,x_train_norm = datanormilizations(x_train,x_test)
+    print("Ready to train.")
     return x_test_norm,x_train_norm,y_train,y_test
 
 
