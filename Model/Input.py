@@ -11,7 +11,7 @@ import math
 
 ################ ###################
 ###### DATA INPUT ##########
-def readcsvpanda():  
+def Read_CSV():  
     try:
         file_path = 'Dataset/Temp_dataset.csv'
         # Read the CSV file, 
@@ -42,59 +42,10 @@ def readcsvpanda():
         #Testing : print(x.columns)print(x.dtypes)print(y.dtypes)# Print the column names and data types to check
     return x, y
 
-
-def filter_dataframe(x): 
-    #This aims to improve the interactive nature of this model
-    added =[] #using to identify what fields should go into the dataset
-    x_edit=pd.DataFrame() #new Dataset to store edited Dataset.
-    print("\nSelect a fields to train model on:")# First line
-    while True:
-        print(added)#display whats added
-        print("1. Basel Temperature [2 m elevation corrected]")
-        print("2. Basel Relative Humidity [2 m]")
-        print("3. Basel Wind Speed [800 mb]")
-        print("4. Basel Wind Direction [800 mb]")
-        print("5. Basel Shortwave Radiation")
-        print("6. Done")
-        choice = input("Enter your choice (1-6): ")
-        #I am choosing the option to improve data data engineering by allowing on the fly 
-        #ensure duplicate values are not inseted into the model
-        if choice == '1' and 'Basel Temperature [2 m elevation corrected]' not in added: 
-            added.append('Basel Temperature [2 m elevation corrected]')
-
-        elif choice == '2' and 'Basel Relative Humidity [2 m]' not in added :
-            print("\nBasel Relative Humidity [2 m]")
-            added.append('Basel Relative Humidity [2 m]')
-
-        elif choice == '3' and 'Basel Wind Speed [800 mb]' not in added:
-            print("\nBasel Wind Speed [800 mb]")
-            added.append('Basel Wind Speed [800 mb]')
-
-        elif choice == '4' and 'Basel Wind Direction [800 mb]' not in added:
-            added.append('Basel Wind Direction [800 mb]')
-            print("\nBasel Wind Direction [800 mb]")
-
-        elif choice == '5' and 'Basel Shortwave Radiation' not in added:
-            print("\nBasel Shortwave Radiation")
-            added.append('Basel Shortwave Radiation')
-
-        elif choice == '6':
-            print("\nEnd")
-            break
-
-        else:
-            print("Invalid choice or Field selected already")
-        print("Selected fields:",added)
-    if len(added)>0:
-        x_edit=x[added]
-    else:
-        print("No Fields were selected.")
-        sys.exit("Issue splitting the file")
-    return x_edit
 ###################################################################
 ##################### DATA PREPROCESSING ###############################
 
-def datacleaningV2(x, y):
+def data_cleaning(x, y):
     # THE goal of this class is to allow me to balance the dataset according to either rain or no rain.
     # Allows API control to allow for finer control and easier to test
     while True:
@@ -158,8 +109,55 @@ def datacleaningV2(x, y):
     print("Complete Data Cleaning")
     return x_balanced, y_balanced
 
+def filter_dataframe(x): 
+    #This aims to improve the interactive nature of this model
+    added =[] #using to identify what fields should go into the dataset
+    x_edit=pd.DataFrame() #new Dataset to store edited Dataset.
+    print("\nSelect a fields to train model on:")# First line
+    while True:
+        print(added)#display whats added
+        print("1. Basel Temperature [2 m elevation corrected]")
+        print("2. Basel Relative Humidity [2 m]")
+        print("3. Basel Wind Speed [800 mb]")
+        print("4. Basel Wind Direction [800 mb]")
+        print("5. Basel Shortwave Radiation")
+        print("6. Done")
+        choice = input("Enter your choice (1-6): ")
+        #I am choosing the option to improve data data engineering by allowing on the fly 
+        #ensure duplicate values are not inseted into the model
+        if choice == '1' and 'Basel Temperature [2 m elevation corrected]' not in added: 
+            added.append('Basel Temperature [2 m elevation corrected]')
 
-def datanormilizations(x_train,x_test):
+        elif choice == '2' and 'Basel Relative Humidity [2 m]' not in added :
+            print("\nBasel Relative Humidity [2 m]")
+            added.append('Basel Relative Humidity [2 m]')
+
+        elif choice == '3' and 'Basel Wind Speed [800 mb]' not in added:
+            print("\nBasel Wind Speed [800 mb]")
+            added.append('Basel Wind Speed [800 mb]')
+
+        elif choice == '4' and 'Basel Wind Direction [800 mb]' not in added:
+            added.append('Basel Wind Direction [800 mb]')
+            print("\nBasel Wind Direction [800 mb]")
+
+        elif choice == '5' and 'Basel Shortwave Radiation' not in added:
+            print("\nBasel Shortwave Radiation")
+            added.append('Basel Shortwave Radiation')
+
+        elif choice == '6':
+            print("\nEnd")
+            break
+
+        else:
+            print("Invalid choice or Field selected already")
+        print("Selected fields:",added)
+    if len(added)>0:
+        x_edit=x[added]
+    else:
+        print("No Fields were selected.")
+        sys.exit("Issue splitting the file")
+    return x_edit
+def data_norm(x_train,x_test):
 
 # Feature Normalization
 
@@ -179,7 +177,8 @@ def datasplt(size,seed, x, y):
 ###########################
 ##### Data plotting##########
 def dataplot(x,y):
-    sample_size = 1000
+    if len(x)>100: 
+        sample_size = 100
 
     x_sample = x.sample(n=sample_size, random_state=1)
     y_sample = y.loc[x_sample.index]
@@ -190,36 +189,36 @@ def dataplot(x,y):
 
     # Plot Independent Variables
     plt.figure(figsize=(18, 12))
-
-    plt.subplot(2, 3, 1)
-    plt.scatter(x_sample.index, x_sample['Basel Temperature [2 m elevation corrected]'], c='b', edgecolor='k', s=50)
-    plt.title('Temperature Over Time')
-    plt.xlabel('Index')
-    plt.ylabel('Temperature')
-
-    plt.subplot(2, 3, 2)
-    plt.scatter(x_sample.index, x_sample['Basel Relative Humidity [2 m]'], c='g', edgecolor='k', s=50)
-    plt.title('Humidity Over Time')
-    plt.xlabel('Index')
-    plt.ylabel('Humidity')
-
-    plt.subplot(2, 3, 3)
-    plt.scatter(x_sample.index, x_sample['Basel Wind Speed [800 mb]'], c='r', edgecolor='k', s=50)
-    plt.title('Wind Speed Over Time')
-    plt.xlabel('Index')
-    plt.ylabel('Wind Speed')
-
-    plt.subplot(2, 3, 4)
-    plt.scatter(x_sample.index, x_sample['Basel Wind Direction [800 mb]'], c='c', edgecolor='k', s=50)
-    plt.title('Wind Direction Over Time')
-    plt.xlabel('Index')
-    plt.ylabel('Wind Direction')
-
-    plt.subplot(2, 3, 5)
-    plt.scatter(x_sample.index, x_sample['Basel Shortwave Radiation'], c='m', edgecolor='k', s=50)
-    plt.title('Shortwave Radiation Over Time')
-    plt.xlabel('Index')
-    plt.ylabel('Shortwave Radiation')
+    if 'Basel Temperature [2 m elevation corrected]'in x_sample:
+        plt.subplot(2, 3, 1)
+        plt.scatter(x_sample.index, x_sample['Basel Temperature [2 m elevation corrected]'], c='b', edgecolor='k', s=50)
+        plt.title('Temperature Over Time')
+        plt.xlabel('Index')
+        plt.ylabel('Temperature')
+    if 'Basel Relative Humidity [2 m]' in x_sample:
+        plt.subplot(2, 3, 2)
+        plt.scatter(x_sample.index, x_sample['Basel Relative Humidity [2 m]'], c='g', edgecolor='k', s=50)
+        plt.title('Humidity Over Time')
+        plt.xlabel('Index')
+        plt.ylabel('Humidity')
+    if 'Basel Wind Speed [800 mb]' in x_sample:
+        plt.subplot(2, 3, 3)
+        plt.scatter(x_sample.index, x_sample['Basel Wind Speed [800 mb]'], c='r', edgecolor='k', s=50)
+        plt.title('Wind Speed Over Time')
+        plt.xlabel('Index')
+        plt.ylabel('Wind Speed')
+    if 'Basel Wind Direction [800 mb]' in x_sample:
+        plt.subplot(2, 3, 4)
+        plt.scatter(x_sample.index, x_sample['Basel Wind Direction [800 mb]'], c='c', edgecolor='k', s=50)
+        plt.title('Wind Direction Over Time')
+        plt.xlabel('Index')
+        plt.ylabel('Wind Direction')
+    if 'Basel Shortwave Radiation' in x_sample:
+        plt.subplot(2, 3, 5)
+        plt.scatter(x_sample.index, x_sample['Basel Shortwave Radiation'], c='m', edgecolor='k', s=50)
+        plt.title('Shortwave Radiation Over Time')
+        plt.xlabel('Index')
+        plt.ylabel('Shortwave Radiation')
 
     # Plot Dependent Variable (Series)
     plt.subplot(2, 3, 6)
@@ -232,8 +231,6 @@ def dataplot(x,y):
     plt.tight_layout()
     plt.show()
 
-def deduplicate(x,y):
-    print(x.duplicated())
 ###################### Error Handling for input####################
                        #########################
 
@@ -286,12 +283,14 @@ def readfromDB():
 #########RUNNING##############################################
 
 def main():
-    x,y= readcsvpanda()
-    x,y=datacleaningV2(x,y)
+    x,y= Read_CSV()
+    x,y=data_cleaning(x,y)
     x=filter_dataframe(x)
+    dataplot(x,y)
     x_train, x_test, y_train, y_test= datasplt(0.7,42,x,y)
-    x_test_norm,x_train_norm = datanormilizations(x_train,x_test)
+    x_test_norm,x_train_norm = data_norm(x_train,x_test)
     print("Ready to train.")
     return x_test_norm,x_train_norm,y_train,y_test
 
 
+main()

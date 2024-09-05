@@ -28,7 +28,7 @@ def KNN(x_train,y_train,x_test):
     knn_model = KNeighborsRegressor(n_neighbors)
     knn_model.fit(x_train,y_train)
     y_pred=knn_model.predict(x_test)
-    model_folder_path = 'Modal/'  # Specify the folder path where you want to save the model
+    model_folder_path = 'Model/'  # Specify the folder path where you want to save the model
     os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
     model_file_path = os.path.join(model_folder_path, 'KNN.pkl')  # Specify the file path and name
     joblib.dump(knn_model, model_file_path)
