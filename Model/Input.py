@@ -186,42 +186,63 @@ def dataplot(x,y):
     # Verify and print column names and Series name
     print("Columns in x:", x.columns)
     print("Name of y (Series):", y.name)
-
+    r=0
+    p=len(x_sample.columns)+1
+    print
     # Plot Independent Variables
+    if p <=2:
+        col = 1
+    if p<=4:
+        col = 2
+    if p <= 6:
+        col = 3
     plt.figure(figsize=(18, 12))
     if 'Basel Temperature [2 m elevation corrected]'in x_sample:
-        plt.subplot(2, 3, 1)
+        r=r+1
+        print(r)
+        plt.subplot(2, col, r)
         plt.scatter(x_sample.index, x_sample['Basel Temperature [2 m elevation corrected]'], c='b', edgecolor='k', s=50)
         plt.title('Temperature Over Time')
         plt.xlabel('Index')
         plt.ylabel('Temperature')
     if 'Basel Relative Humidity [2 m]' in x_sample:
-        plt.subplot(2, 3, 2)
+        r=r+1
+        print(r)
+        plt.subplot(2, col, r)
         plt.scatter(x_sample.index, x_sample['Basel Relative Humidity [2 m]'], c='g', edgecolor='k', s=50)
         plt.title('Humidity Over Time')
         plt.xlabel('Index')
         plt.ylabel('Humidity')
     if 'Basel Wind Speed [800 mb]' in x_sample:
-        plt.subplot(2, 3, 3)
+        r=r+1
+        print(r)
+        plt.subplot(2, col, r)
         plt.scatter(x_sample.index, x_sample['Basel Wind Speed [800 mb]'], c='r', edgecolor='k', s=50)
         plt.title('Wind Speed Over Time')
         plt.xlabel('Index')
         plt.ylabel('Wind Speed')
     if 'Basel Wind Direction [800 mb]' in x_sample:
-        plt.subplot(2, 3, 4)
+        r=r+1
+        print(r)
+        plt.subplot(2, col, r)
         plt.scatter(x_sample.index, x_sample['Basel Wind Direction [800 mb]'], c='c', edgecolor='k', s=50)
         plt.title('Wind Direction Over Time')
         plt.xlabel('Index')
         plt.ylabel('Wind Direction')
     if 'Basel Shortwave Radiation' in x_sample:
-        plt.subplot(2, 3, 5)
+        r=r+1
+        plt.subplot(2, col, r)
+        print(r)
         plt.scatter(x_sample.index, x_sample['Basel Shortwave Radiation'], c='m', edgecolor='k', s=50)
         plt.title('Shortwave Radiation Over Time')
         plt.xlabel('Index')
         plt.ylabel('Shortwave Radiation')
 
     # Plot Dependent Variable (Series)
-    plt.subplot(2, 3, 6)
+    r=r+1
+    plt.subplot(2, col, r)
+    print(col)
+    print(r)
     plt.scatter(y_sample.index, y_sample.values, c='b', edgecolor='k', s=50)
     plt.title('Precipitation Over Time')
     plt.xlabel('Index')
@@ -293,4 +314,3 @@ def main():
     return x_test_norm,x_train_norm,y_train,y_test
 
 
-main()
