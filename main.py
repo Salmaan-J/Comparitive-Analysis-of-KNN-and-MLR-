@@ -1,5 +1,5 @@
 #Import Modules where they are coded. Reason For Split to manage time and tasks
-from app import app
+from app import API
 from Model import Input
 from Model import ML
 from Model import Accuracy_Test as AT
@@ -34,8 +34,8 @@ def loadmodel(type):
         return MLR
     return "NULL"
 
-def main():
-    while True:
+
+while True:
             print(" Program Initialisation")
             print("1. Train Model")
             print("2. Launch Server")
@@ -56,7 +56,5 @@ def main():
                     print("\nPlease train the model first before launching server.")
                 else:
                     print("\nIncorrect input.")
-    app.run(debug=True)
 
-if __name__=='__main__':
-    main()
+API.start_server()
