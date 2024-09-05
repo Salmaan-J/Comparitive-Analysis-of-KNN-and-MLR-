@@ -35,9 +35,7 @@ def loadmodel(type):
     return "NULL"
 
 def main():
-    print(len(select))
-    if len(select)==0:
-        while True:
+    while True:
             print(" Program Initialisation")
             print("1. Train Model")
             print("2. Launch Server")
