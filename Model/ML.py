@@ -3,7 +3,7 @@ import joblib
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 import sklearn.metrics as k
-select =[]
+
 
 def MLR(x_train,y_train,x_test):
     mlr_model = LinearRegression()
@@ -33,31 +33,6 @@ def KNN(x_train,y_train,x_test):
     model_file_path = os.path.join(model_folder_path, 'KNN.pkl')  # Specify the file path and name
     joblib.dump(knn_model, model_file_path)
     return y_pred
-
-
-def  run():
-   while True:
-            print(" Program Initialisation")
-            print("1. Train Model")
-            print("2. Launch Server")
-
-            choice = input("\nEnter your choice (1-3): ")
-            choice = choice.strip()
-            select.append(choice)
-            if choice == '1': 
-                x_test,x_train,y_train,y_test= Input.main()      
-                print("\nData Preperation complete")
-                mlr_pred = ML.MLR(x_train,y_train,x_test)
-                knn_pred = ML.KNN(x_train,y_train,x_test)
-                AT.calculateval(mlr_pred,y_test)
-            elif choice == '2':
-                break           
-            else:
-                if '1' not in select:
-                    print("\nPlease train the model first before launching server.")
-                else:
-                    print("\nIncorrect input.")
-  
 
 
 

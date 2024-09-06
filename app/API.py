@@ -11,4 +11,4 @@ def update(): #test for now sending to homepage HTML.... TO swap with Get or ano
 
 
 def start_server():
-        app.run(debug=True)
+        app.run(debug=True)#Set to false when Server is started in Demo
