@@ -14,7 +14,28 @@ select =[]
 
 
 
+while True:
+            print(" Program Initialisation")
+            print("1. Train Model")
+            print("2. Launch Server")
 
+            choice = input("\nEnter your choice (1-3): ")
+            choice = choice.strip()
+            select.append(choice)
+            if choice == '1': 
+                x_test,x_train,y_train,y_test= Input.main()      
+                print("\nData Preperation complete")
+                mlr_pred = ML.MLR(x_train,y_train,x_test)
+                knn_pred = ML.KNN(x_train,y_train,x_test)
+                AT.calculateval(mlr_pred,y_test)
+            elif choice == '2':
+                break
+                API.start_server()           
+            else:
+                if '1' not in select:
+                    print("\nPlease train the model first before launching server.")
+                else:
+                    print("\nIncorrect input.")
 
 
 
@@ -33,28 +54,3 @@ def loadmodel(type):
         MLR = joblib.load(model_file_path)
         return MLR
     return "NULL"
-
-
-while True:
-            print(" Program Initialisation")
-            print("1. Train Model")
-            print("2. Launch Server")
-
-            choice = input("\nEnter your choice (1-3): ")
-            choice = choice.strip()
-            select.append(choice)
-            if choice == '1': 
-                x_test,x_train,y_train,y_test= Input.main()      
-                print("\nData Preperation complete")
-                mlr_pred = ML.MLR(x_train,y_train,x_test)
-                knn_pred = ML.KNN(x_train,y_train,x_test)
-                AT.calculateval(mlr_pred,y_test)
-            elif choice == '2':
-                break           
-            else:
-                if '1' not in select:
-                    print("\nPlease train the model first before launching server.")
-                else:
-                    print("\nIncorrect input.")
-
-API.start_server()

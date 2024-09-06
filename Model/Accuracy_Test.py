@@ -26,5 +26,5 @@ def precision(ha,fa):
 
 
 def calculateval(y_pred,y_test):
-    print(len(y_pred))
-    print(len(y_test))
+ # here I need to create a function that that calculates thefunctions to calculate the accuracy.    
+    return "Null"
