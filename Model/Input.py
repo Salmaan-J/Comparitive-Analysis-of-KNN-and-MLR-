@@ -156,6 +156,7 @@ def filter_dataframe(x):
     else:
         print("No Fields were selected.")
         sys.exit("Issue splitting the file")
+    print(x_edit)
     return x_edit
 def data_norm(x_train,x_test):
 
@@ -167,8 +168,20 @@ def data_norm(x_train,x_test):
     print("Complete Data Normilization")
     return x_test_norm, x_train_norm  # Return the normalized testing and training data
 
-def datasplt(size,seed, x, y):
+def datasplt(x, y):
     seed=42 #hardcode for now Reason added multiple input is for easier management.
+    while True:
+        print("Select the ratio of data with rain to data without rain as a percentage. (Between 1-100)")
+        size = input("Insert here: ").strip()
+        try:
+            size = int(size)
+            if 1 <= size <= 100:
+                break
+            else:
+                print("Insert a number only between 1 - 100")
+        except:
+            print("Insert a number only between 1 - 100")
+    size = size/100
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size, random_state=seed) #state = seed of 42:  70/30 split
     print("Complete Data Splitting")
     return x_train, x_test, y_train, y_test
@@ -198,39 +211,35 @@ def dataplot(x,y):
         col = 3
     plt.figure(figsize=(18, 12))
     if 'Basel Temperature [2 m elevation corrected]'in x_sample:
-        r=r+1
-        print(r)
+        r +=1
         plt.subplot(2, col, r)
         plt.scatter(x_sample.index, x_sample['Basel Temperature [2 m elevation corrected]'], c='b', edgecolor='k', s=50)
         plt.title('Temperature Over Time')
         plt.xlabel('Index')
         plt.ylabel('Temperature')
     if 'Basel Relative Humidity [2 m]' in x_sample:
-        r=r+1
-        print(r)
+        r +=1
         plt.subplot(2, col, r)
         plt.scatter(x_sample.index, x_sample['Basel Relative Humidity [2 m]'], c='g', edgecolor='k', s=50)
         plt.title('Humidity Over Time')
         plt.xlabel('Index')
         plt.ylabel('Humidity')
     if 'Basel Wind Speed [800 mb]' in x_sample:
-        r=r+1
-        print(r)
+        r +=1
         plt.subplot(2, col, r)
         plt.scatter(x_sample.index, x_sample['Basel Wind Speed [800 mb]'], c='r', edgecolor='k', s=50)
         plt.title('Wind Speed Over Time')
         plt.xlabel('Index')
         plt.ylabel('Wind Speed')
     if 'Basel Wind Direction [800 mb]' in x_sample:
-        r=r+1
-        print(r)
+        r +=1
         plt.subplot(2, col, r)
         plt.scatter(x_sample.index, x_sample['Basel Wind Direction [800 mb]'], c='c', edgecolor='k', s=50)
         plt.title('Wind Direction Over Time')
         plt.xlabel('Index')
         plt.ylabel('Wind Direction')
     if 'Basel Shortwave Radiation' in x_sample:
-        r=r+1
+        r +=1
         plt.subplot(2, col, r)
         print(r)
         plt.scatter(x_sample.index, x_sample['Basel Shortwave Radiation'], c='m', edgecolor='k', s=50)
@@ -239,10 +248,8 @@ def dataplot(x,y):
         plt.ylabel('Shortwave Radiation')
 
     # Plot Dependent Variable (Series)
-    r=r+1
+    r +=1
     plt.subplot(2, col, r)
-    print(col)
-    print(r)
     plt.scatter(y_sample.index, y_sample.values, c='b', edgecolor='k', s=50)
     plt.title('Precipitation Over Time')
     plt.xlabel('Index')
@@ -308,7 +315,7 @@ def main():
     x,y=data_cleaning(x,y)
     x=filter_dataframe(x)
     dataplot(x,y)
-    x_train, x_test, y_train, y_test= datasplt(0.7,42,x,y)
+    x_train, x_test, y_train, y_test= datasplt(x,y)
     x_test_norm,x_train_norm = data_norm(x_train,x_test)
     print("Ready to train.")
     return x_test_norm,x_train_norm,y_train,y_test

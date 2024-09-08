@@ -3,9 +3,6 @@ from app import API
 from Model import Input
 from Model import ML
 from Model import Accuracy_Test as AT
-import os
-import joblib
-
 
 select =[]
 # the goal here in Main is to first take input from the user to check if the 
@@ -14,43 +11,34 @@ select =[]
 
 
 
-while True:
+
+
+def modeltrain():
+      while True:
             print(" Program Initialisation")
-            print("1. Train Model")
+            print("1. Train Model MLR")
+            print("2. Train Model KNN")
             print("2. Launch Server")
 
             choice = input("\nEnter your choice (1-3): ")
             choice = choice.strip()
             select.append(choice)
-            if choice == '1': 
-                x_test,x_train,y_train,y_test= Input.main()      
+            x_test,x_train,y_train,y_test= Input.main()
+            if choice == '1':       
                 print("\nData Preperation complete")
                 mlr_pred = ML.MLR(x_train,y_train,x_test)
-                knn_pred = ML.KNN(x_train,y_train,x_test)
+                
+                print("MLR values")
                 AT.calculateval(mlr_pred,y_test)
+                
             elif choice == '2':
-                break
-                API.start_server()           
+                knn_pred = ML.KNN(x_train,y_train,x_test)
+                print("KNN values")
+                AT.calculateval(knn_pred,y_test)
+            elif choice =='3':
+                API.start_server()  
+                break         
             else:
-                if '1' not in select:
-                    print("\nPlease train the model first before launching server.")
-                else:
-                    print("\nIncorrect input.")
+                print("\nIncorrect input.")
 
-
-
-def loadmodel(type):
-    if type ==1:
-        model_folder_path = ''  # Specify the folder path where you want to save the model
-        os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
-        model_file_path = os.path.join(model_folder_path, 'KNN.pkl')  # Specify the file path and name
-        KNN = joblib.load(model_file_path)
-        return KNN
-    elif type == 2:
-        # Assuming 'knn' is your trained KNeighborsClassifier model
-        model_folder_path = ''  # Specify the folder path where you want to save the model
-        os.makedirs(model_folder_path, exist_ok=True)  # Create the folder if it doesn't exist
-        model_file_path = os.path.join(model_folder_path, 'MLR.pkl')  # Specify the file path and name
-        MLR = joblib.load(model_file_path)
-        return MLR
-    return "NULL"
+modeltrain()
