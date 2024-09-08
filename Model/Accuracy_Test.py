@@ -58,7 +58,6 @@ def calculateval(y_pred,y_test):
     print("Completed model calculations \n")
     correct_test_samples = hitalarms + correct_alarms
     acc = accuracy(correct_test_samples,test_samples)
-    fa=(hitalarms+miss_alarms+false_alarms)
     ThreatS = TS(hitalarms,miss_alarms,false_alarms)
     Summary_AR= SAR(hitalarms,test_samples)
     Missing_ar = MAR(miss_alarms,hitalarms)
