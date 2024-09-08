@@ -115,7 +115,7 @@ def filter_dataframe(x):
     x_edit=pd.DataFrame() #new Dataset to store edited Dataset.
     print("\nSelect a fields to train model on:")# First line
     while True:
-        print(added)#display whats added
+        #print(added)#display whats added
         print("1. Basel Temperature [2 m elevation corrected]")
         print("2. Basel Relative Humidity [2 m]")
         print("3. Basel Wind Speed [800 mb]")
@@ -156,7 +156,7 @@ def filter_dataframe(x):
     else:
         print("No Fields were selected.")
         sys.exit("Issue splitting the file")
-    print(x_edit)
+    #print(x_edit)
     return x_edit
 def data_norm(x_train,x_test):
 
@@ -171,7 +171,7 @@ def data_norm(x_train,x_test):
 def datasplt(x, y):
     seed=42 #hardcode for now Reason added multiple input is for easier management.
     while True:
-        print("Select the ratio of data with rain to data without rain as a percentage. (Between 1-100)")
+        print("Select the ratio of Test to Training Data (Between 1-100)")
         size = input("Insert here: ").strip()
         try:
             size = int(size)
@@ -183,7 +183,7 @@ def datasplt(x, y):
             print("Insert a number only between 1 - 100")
     size = size/100
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size, random_state=seed) #state = seed of 42:  70/30 split
-    print("Complete Data Splitting")
+    #print("Complete Data Splitting")
     return x_train, x_test, y_train, y_test
 
 
@@ -197,11 +197,10 @@ def dataplot(x,y):
     y_sample = y.loc[x_sample.index]
 
     # Verify and print column names and Series name
-    print("Columns in x:", x.columns)
-    print("Name of y (Series):", y.name)
+    #print("Columns in x:", x.columns)
+    #print("Name of y (Series):", y.name)
     r=0
     p=len(x_sample.columns)+1
-    print
     # Plot Independent Variables
     if p <=2:
         col = 1
@@ -270,40 +269,7 @@ def dataplot(x,y):
 #################DATABASE SECTION#############################
 
 
-def SavetoDB():
-    import sqlite3
-    # Connect to the SQLite database (creates a new one if it doesn't exist)
-    conn = sqlite3.connect('example.db')
-    # Create a cursor object to execute SQL commands
-    cursor = conn.cursor()
-    # Create a table if it doesn't exist
-    # Sample data
-    # Insert data into the table
-    #cursor.executemany('INSERT INTO users (name, email) VALUES (?, ?)', user_data)
-    # Commit changes to the database
-    conn.commit()
-    # Close the cursor and connection
-    cursor.close()
-    conn.close()
-    return "success"
 
-def readfromDB():
-    # Connect to the SQLite database
-    conn = sqlite3.connect('Save.db')
-    # Create a cursor object to execute SQL commands
-    cursor = conn.cursor()
-    # SELECT query to retrieve data from the users table
-    cursor.execute('SELECT * FROM users')
-    # Fetch all rows from the result of the SELECT query
-    rows = cursor.fetchall()
-    # Print the retrieved data
-    for row in rows:
-        print(row)
-    # Close the cursor and connection
-    cursor.close()
-    conn.close()
-
-    return "success"
 
 
 
