@@ -13,7 +13,7 @@ import math
 ###### DATA INPUT ##########
 def Read_CSV():  
     try:
-        file_path = 'Dataset/Temp_dataset.csv'
+        file_path = 'Dataset/Final_dataset.csv'
         # Read the CSV file, 
         df = pd.read_csv(file_path)
     except Exception as e:
@@ -23,19 +23,18 @@ def Read_CSV():
 
        
     df.columns = df.columns.str.replace('ï»¿timestamp', 'timestamp') # Clean the first column name if it contains wierd name on file
+    #df = df.drop('timestamp')
         # Drop the target column and convert the remaining columns to float
-    x = df.drop(columns=['Basel Precipitation Total'])
     y = df['Basel Precipitation Total'].astype(float) #convert y to float and place in its own List
+    x = df.drop(columns=['Basel Precipitation Total'])
+    
         # Columns to convert to float
-    columns_to_convert = [
-        'Basel Temperature [2 m elevation corrected]',
-        'Basel Relative Humidity [2 m]',
-        'Basel Wind Speed [800 mb]',
-        'Basel Wind Direction [800 mb]',
-        'Basel Shortwave Radiation']
-
+    for columns in x.columns:
+        print(columns)
+        if columns != 'timestamp':
+            x[columns] = x[columns].astype(float)
         # Convert the X columns to float
-    x[columns_to_convert] = x[columns_to_convert].astype(float)
+    
     print("ReadCSV complete")
     #print(len(x)) 
     #print(len(y)) 
@@ -45,13 +44,11 @@ def Read_CSV():
 ###################################################################
 ##################### DATA PREPROCESSING ###############################
 
-def data_cleaning(x, y):
+def data_cleaning(x, y,balance):
     # THE goal of this class is to allow me to balance the dataset according to either rain or no rain.
     # Allows API control to allow for finer control and easier to test
     while True:
         try:
-            print("\nInsert the percentage of no rain in the dataset. Where 100 is half rain and half no rain.")
-            balance = input()
             balance = int(balance)
             break
         except ValueError:
@@ -104,7 +101,6 @@ def data_cleaning(x, y):
 
     x_balanced = pd.concat([x_rain, x_norain_balanced])
     y_balanced = pd.concat([y_rain, y_norain_balanced])
-    #x_balanced = x_balanced.drop(columns=['timestamp']) #Keeping here for now as Data filtering removes timestamps. Might add back later
     # this section needs to be looked at as you are taking the no rain out and not adding rain.
     print("Complete Data Cleaning")
     return x_balanced, y_balanced
@@ -166,6 +162,8 @@ def data_norm(x_train,x_test):
     x_train_norm = scaler.fit_transform(x_train)  # Fit the scaler on the training data and transform it
     x_test_norm = scaler.transform(x_test)  # Transform the testing data using the already fitted scaler
     print("Complete Data Normilization")
+    print(x_train_norm)
+    # add the ability to view
     return x_test_norm, x_train_norm  # Return the normalized testing and training data
 
 def datasplt(x, y):
@@ -279,8 +277,8 @@ def dataplot(x,y):
 def main():
     x,y= Read_CSV()
     x,y=data_cleaning(x,y)
-    x=filter_dataframe(x)
-    dataplot(x,y)
+   # x=filter_dataframe(x)
+   # dataplot(x,y)
     x_train, x_test, y_train, y_test= datasplt(x,y)
     x_test_norm,x_train_norm = data_norm(x_train,x_test)
     print("Ready to train.")
