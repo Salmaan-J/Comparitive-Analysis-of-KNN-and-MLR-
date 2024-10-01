@@ -42,7 +42,10 @@ def calculateval(y_pred,y_test):
         print("Note the model has not produced the same amount of predictions than what is in test")
         return 0
     for p, o in zip(y_pred, y_test): 
-        if p > 0 and o > 0:
+        #print(p,o)
+        if p < 0:
+            p=0
+        if p == o:
             hitalarms += 1
         elif  p > 0 and o == 0:
             false_alarms += 1

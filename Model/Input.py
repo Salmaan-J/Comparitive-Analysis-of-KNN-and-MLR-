@@ -1,6 +1,7 @@
 #########Imports##########
 import sqlite3
 import sys
+import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 import pandas as pd
@@ -20,25 +21,14 @@ def Read_CSV():
             # Catch issue with file naming.
             print(f"Issue when  attempting to read files {e}")
             sys.exit(1) #gracefull exit
-
-       
-    df.columns = df.columns.str.replace('ï»¿timestamp', 'timestamp') # Clean the first column name if it contains wierd name on file
-    #df = df.drop('timestamp')
-        # Drop the target column and convert the remaining columns to float
+    # Drop the target column and convert the remaining columns to float
     y = df['Basel Precipitation Total'].astype(float) #convert y to float and place in its own List
     x = df.drop(columns=['Basel Precipitation Total'])
-    
         # Columns to convert to float
     for columns in x.columns:
-        print(columns)
-        if columns != 'timestamp':
-            x[columns] = x[columns].astype(float)
+        x[columns] = x[columns].astype(float)
         # Convert the X columns to float
-    
     print("ReadCSV complete")
-    #print(len(x)) 
-    #print(len(y)) 
-        #Testing : print(x.columns)print(x.dtypes)print(y.dtypes)# Print the column names and data types to check
     return x, y
 
 ###################################################################
@@ -105,72 +95,26 @@ def data_cleaning(x, y,balance):
     print("Complete Data Cleaning")
     return x_balanced, y_balanced
 
-def filter_dataframe(x): 
-    #This aims to improve the interactive nature of this model
-    added =[] #using to identify what fields should go into the dataset
-    x_edit=pd.DataFrame() #new Dataset to store edited Dataset.
-    print("\nSelect a fields to train model on:")# First line
-    while True:
-        #print(added)#display whats added
-        print("1. Basel Temperature [2 m elevation corrected]")
-        print("2. Basel Relative Humidity [2 m]")
-        print("3. Basel Wind Speed [800 mb]")
-        print("4. Basel Wind Direction [800 mb]")
-        print("5. Basel Shortwave Radiation")
-        print("6. Done")
-        choice = input("Enter your choice (1-6): ")
-        #I am choosing the option to improve data data engineering by allowing on the fly 
-        #ensure duplicate values are not inseted into the model
-        if choice == '1' and 'Basel Temperature [2 m elevation corrected]' not in added: 
-            added.append('Basel Temperature [2 m elevation corrected]')
 
-        elif choice == '2' and 'Basel Relative Humidity [2 m]' not in added :
-            print("\nBasel Relative Humidity [2 m]")
-            added.append('Basel Relative Humidity [2 m]')
-
-        elif choice == '3' and 'Basel Wind Speed [800 mb]' not in added:
-            print("\nBasel Wind Speed [800 mb]")
-            added.append('Basel Wind Speed [800 mb]')
-
-        elif choice == '4' and 'Basel Wind Direction [800 mb]' not in added:
-            added.append('Basel Wind Direction [800 mb]')
-            print("\nBasel Wind Direction [800 mb]")
-
-        elif choice == '5' and 'Basel Shortwave Radiation' not in added:
-            print("\nBasel Shortwave Radiation")
-            added.append('Basel Shortwave Radiation')
-
-        elif choice == '6':
-            print("\nEnd")
-            break
-
-        else:
-            print("Invalid choice or Field selected already")
-        print("Selected fields:",added)
-    if len(added)>0:
-        x_edit=x[added]
-    else:
-        print("No Fields were selected.")
-        sys.exit("Issue splitting the file")
-    #print(x_edit)
-    return x_edit
 def data_norm(x_train,x_test):
 
 # Feature Normalization
-
     scaler = MinMaxScaler()  # Initialize the MinMaxScaler for normalization
+    #print(x_train.columns)
     x_train_norm = scaler.fit_transform(x_train)  # Fit the scaler on the training data and transform it
     x_test_norm = scaler.transform(x_test)  # Transform the testing data using the already fitted scaler
     print("Complete Data Normilization")
-    print(x_train_norm)
+    x_train_norm= pd.DataFrame(x_train_norm, columns=x_train.columns)
+    x_test_norm = pd.DataFrame(x_test_norm, columns=x_train.columns)
+    #print(x_train_norm.columns)
     # add the ability to view
     return x_test_norm, x_train_norm  # Return the normalized testing and training data
 
-def datasplt(x, y):
+def datasplt(x, y, size):
     seed=42 #hardcode for now Reason added multiple input is for easier management.
     while True:
-        print("Select the ratio of Test to Training Data (Between 1-100)")
-        size = input("Insert here: ").strip()
+        #print("Select the ratio of Test to Training Data (Between 1-100)")
+        #size = input("Insert here: ").strip()
         try:
             size = int(size)
             if 1 <= size <= 100:
@@ -184,90 +128,34 @@ def datasplt(x, y):
     #print("Complete Data Splitting")
     return x_train, x_test, y_train, y_test
 
+###############################
 
-###########################
-##### Data plotting##########
-def dataplot(x,y):
-    if len(x)>100: 
-        sample_size = 100
-
-    x_sample = x.sample(n=sample_size, random_state=1)
-    y_sample = y.loc[x_sample.index]
-
-    # Verify and print column names and Series name
-    #print("Columns in x:", x.columns)
-    #print("Name of y (Series):", y.name)
-    r=0
-    p=len(x_sample.columns)+1
-    # Plot Independent Variables
-    if p <=2:
-        col = 1
-    if p<=4:
-        col = 2
-    if p <= 6:
-        col = 3
-    plt.figure(figsize=(18, 12))
-    if 'Basel Temperature [2 m elevation corrected]'in x_sample:
-        r +=1
-        plt.subplot(2, col, r)
-        plt.scatter(x_sample.index, x_sample['Basel Temperature [2 m elevation corrected]'], c='b', edgecolor='k', s=50)
-        plt.title('Temperature Over Time')
-        plt.xlabel('Index')
-        plt.ylabel('Temperature')
-    if 'Basel Relative Humidity [2 m]' in x_sample:
-        r +=1
-        plt.subplot(2, col, r)
-        plt.scatter(x_sample.index, x_sample['Basel Relative Humidity [2 m]'], c='g', edgecolor='k', s=50)
-        plt.title('Humidity Over Time')
-        plt.xlabel('Index')
-        plt.ylabel('Humidity')
-    if 'Basel Wind Speed [800 mb]' in x_sample:
-        r +=1
-        plt.subplot(2, col, r)
-        plt.scatter(x_sample.index, x_sample['Basel Wind Speed [800 mb]'], c='r', edgecolor='k', s=50)
-        plt.title('Wind Speed Over Time')
-        plt.xlabel('Index')
-        plt.ylabel('Wind Speed')
-    if 'Basel Wind Direction [800 mb]' in x_sample:
-        r +=1
-        plt.subplot(2, col, r)
-        plt.scatter(x_sample.index, x_sample['Basel Wind Direction [800 mb]'], c='c', edgecolor='k', s=50)
-        plt.title('Wind Direction Over Time')
-        plt.xlabel('Index')
-        plt.ylabel('Wind Direction')
-    if 'Basel Shortwave Radiation' in x_sample:
-        r +=1
-        plt.subplot(2, col, r)
-        print(r)
-        plt.scatter(x_sample.index, x_sample['Basel Shortwave Radiation'], c='m', edgecolor='k', s=50)
-        plt.title('Shortwave Radiation Over Time')
-        plt.xlabel('Index')
-        plt.ylabel('Shortwave Radiation')
-
-    # Plot Dependent Variable (Series)
-    r +=1
-    plt.subplot(2, col, r)
-    plt.scatter(y_sample.index, y_sample.values, c='b', edgecolor='k', s=50)
-    plt.title('Precipitation Over Time')
-    plt.xlabel('Index')
-    plt.ylabel('Precipitation')
-
-    # Adjust layout and show plot
-    plt.tight_layout()
-    plt.show()
-
-###################### Error Handling for input####################
-                       #########################
-
-#switched to handling in function, No recurring error requires issue function
-
-
-
-###################################################################
-#################DATABASE SECTION#############################
-
-
-
+#Filtered data creatting
+def corr_calculation():
+    x,y=Read_CSV()
+    correlation_with_y = pd.Series(index=x.columns)
+    columns_to_drop = []
+    columns_to_keep = pd.Series(index=x.columns)
+    #corr = {}
+    for column in x.columns:
+        #print(column)
+        correlation_with_y[column] = np.corrcoef(x[column], y)[0, 1]              
+    columns_to_keep = correlation_with_y
+    # Loop through the dictionary items (column and corresponding correlation value)
+    for column, corrcof in correlation_with_y.items():
+        # Check if the absolute value of the correlation is less than or equal to 0.1
+        if abs(corrcof) <= 0.1:
+            # Add the column to the list if the condition is met
+            columns_to_drop.append(column)
+            columns_to_keep.drop(column)
+    # Drop these columns from x
+    x_filtered = x.drop(columns=columns_to_drop)
+    #print(f"Columns dropped due to low correlation: {columns_to_drop}")
+    sorted_correlations = columns_to_keep.sort_values(ascending=False)
+    #print(sorted_correlations)
+    x_filtered.to_csv("filtered_data_x.csv", index=False)
+    y.to_csv("filtered_data_y.csv", index=False)
+    sorted_correlations.to_csv("sorted_correlations.csv", header=True)
 
 
 
@@ -283,5 +171,3 @@ def main():
     x_test_norm,x_train_norm = data_norm(x_train,x_test)
     print("Ready to train.")
     return x_test_norm,x_train_norm,y_train,y_test
-
-
