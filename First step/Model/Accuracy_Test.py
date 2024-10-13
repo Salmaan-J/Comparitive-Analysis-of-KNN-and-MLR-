@@ -15,7 +15,10 @@ def TS(ha,ma,fa):
     return formatted_num
 
 def MAR(ma,ha):
-    num =(ma/(ma+ha))
+    if (ma+ha)!=0:
+        num =(ma/(ma+ha))
+    else:
+        num=0
     formatted_num = "{:.2f}".format(num)
     return formatted_num
 
@@ -42,7 +45,14 @@ def calculateval(y_pred,y_test):
         print("Note the model has not produced the same amount of predictions than what is in test")
         return 0
     for p, o in zip(y_pred, y_test): 
-        #print(p)
+        if p<=0:
+            p=0
+        else:
+            p=1
+        if o<=0:
+            o=0
+        else:
+            o=1
         if p == o:
             hitalarms += 1
         elif  p > 0 and o == 0:
@@ -58,11 +68,11 @@ def calculateval(y_pred,y_test):
     
     print("Completed model calculations \n")
     correct_test_samples = hitalarms + correct_alarms
-    acc = accuracy(correct_test_samples,test_samples)
+    Acc = accuracy(correct_test_samples,test_samples)
     ThreatS = TS(hitalarms,miss_alarms,false_alarms)
     Summary_AR= SAR(hitalarms,test_samples)
     Missing_ar = MAR(miss_alarms,hitalarms)
     prec = precision(hitalarms,false_alarms)
-    print(f"Accuracy: {acc}, Threat Score: {ThreatS}, Summary AR: {Summary_AR}, Missing AR: {Missing_ar}, Precision: {prec}")
-    return 1 #acc,ThreatS,Summary_AR,Missing_ar,prec
+    print(f"Accuracy: {Acc}, Threat Score: {ThreatS}, Summary AR: {Summary_AR}, Missing AR: {Missing_ar}, Precision: {prec}")
+    return Acc,ThreatS,Summary_AR,Missing_ar,prec
 

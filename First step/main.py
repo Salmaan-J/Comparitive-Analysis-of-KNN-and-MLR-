@@ -1,7 +1,6 @@
 #Import Modules where they are coded. Reason For Split to manage time and tasks
 import sys
 from sklearn.model_selection import train_test_split
-from app import API
 from Model import Input
 from Model import ML
 from Model import Accuracy_Test as AT
@@ -11,7 +10,7 @@ from scipy.stats import pearsonr
 
 
 
-def Model_Testing():
+def Model_TestingKNN():
     #Testing KNN
     try:
         file_path = 'Dataset/filtered_data_x2.csv'
@@ -34,7 +33,7 @@ def Model_Testing():
     #print(y)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
     x_test_norm,x_train_norm = Input.data_norm(x_train,x_test)
-    ML.KNN(x_train_norm,y_train,x_test_norm,y_test,2)#Changes KNN over each run
+    ML.KNN(x_train_norm,y_train,x_test_norm,y_test,8)#Changes KNN over each run
 
 
 
@@ -62,4 +61,5 @@ def Model_TestingMLR():
     x_test_norm,x_train_norm = Input.data_norm(x_train,x_test)
     ML.MLR(x_test_norm,y_test,x_train_norm,y_train)
 
-Model_TestingMLR()
+#Model_TestingMLR()
+Model_TestingKNN()

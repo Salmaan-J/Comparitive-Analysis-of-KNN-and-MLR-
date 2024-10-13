@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
 import sklearn.metrics as k
 from sklearn.metrics import mean_squared_error
+from sklearn.metrics import root_mean_squared_error
 from sklearn.metrics import r2_score
 from Model.Accuracy_Test import calculateval
 
@@ -25,7 +26,7 @@ def MLR(x_train,y_train,x_test,y_test):
     if not os.path.exists(csv_file_path):
         with open(csv_file_path, mode='w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["n_neighbors" "Selected Features", "Adjusted R²", "RMSE", "R²"])
+            writer.writerow(["Selected Features", "Adjusted R²", "RMSE", "R²","MSE","Accuracy","TS","SAR","MAR","Precision"])
     # Loop through all features and add one at a time
     for feature in x_train.columns:          
         # Check if feature is already in the selected list (avoid duplicates)
@@ -41,7 +42,7 @@ def MLR(x_train,y_train,x_test,y_test):
             y_pred = mlr_model.predict(x_test[current_features])
             current_performance = mean_squared_error(y_test, y_pred)              
             r2 = r2_score(y_test, y_pred)
-            rmse = np.sqrt(current_performance)
+            rmse =root_mean_squared_error(y_test, y_pred)
             adjusted_r2 = 1 - (1 - r2) * (len(y_test) - 1) / (len(y_test) - len(current_features) - 1)
                 # Print performance metrics
             print(f"Evaluating feature: {feature}")
@@ -49,10 +50,10 @@ def MLR(x_train,y_train,x_test,y_test):
             print(f'Root Mean Squared Error (RMSE): {rmse}')
             print(f'Mean Squared Error (MSE): {current_performance}')
             print(f'R-squared (R^2): {r2}')
-            #calculateval(y_pred, y_test)
+            Acc,ThreatS,Summary_AR,Missing_ar,prec=calculateval(y_pred, y_test)
             with open(csv_file_path, mode='a', newline='') as file:
                     writer = csv.writer(file)
-                    writer.writerow([current_features, adjusted_r2, rmse, r2])
+                    writer.writerow([current_features, adjusted_r2, rmse, r2,current_performance,Acc,ThreatS,Summary_AR,Missing_ar,prec])
                     # Compare performance to baseline and update the feature list
             if baseline_performance is None:
                 print(f"Setting baseline performance to {current_performance} as it's the first comparison")
@@ -73,7 +74,7 @@ def MLR(x_train,y_train,x_test,y_test):
     y_pred = mlr_model.predict(x_test[master_feature_list])
     current_performance = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
-    rmse = np.sqrt(current_performance)
+    rmse = root_mean_squared_error(y_test,y_pred)
     adjusted_r2 = 1 - (1 - r2) * (len(y_test) - 1) / (len(y_test) - len(master_feature_list) - 1)
                 # Print performance metrics
     print(f"Final feature: {master_feature_list}")
@@ -99,7 +100,7 @@ def KNN(x_train, y_train, x_test, y_test,input):
     if not os.path.exists(csv_file_path):
         with open(csv_file_path, mode='w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["n_neighbors" "Selected Features", "Adjusted R²", "RMSE", "R²","MSE"])
+            writer.writerow(["n_neighbors","Selected Features", "Adjusted R²", "RMSE", "R²","MSE","Accuracy","TS","SAR","MAR","Precision"])
     for feature in x_train.columns:
                 # Check if the feature is already selected (avoid duplicates)
                 if feature not in master_feature_list:
@@ -113,7 +114,10 @@ def KNN(x_train, y_train, x_test, y_test,input):
                 # Evaluate model performance
                 current_performance = mean_squared_error(y_test, y_pred)
                 r2 = r2_score(y_test, y_pred)
-                rmse = np.sqrt(current_performance)
+                rmse = root_mean_squared_error(y_test,y_pred)
+                print(current_performance)
+                r3=rmse *rmse
+                print(r3)
                 adjusted_r2 = 1 - (1 - r2) * (len(y_test) - 1) / (len(y_test) - len(current_features) - 1)
                 # Print performance metrics
                 print(f"Evaluating feature: {feature}")
@@ -122,10 +126,10 @@ def KNN(x_train, y_train, x_test, y_test,input):
                 print(f'Root Mean Squared Error (RMSE): {rmse}')
                 print(f'Mean Squared Error (MSE): {current_performance}')
                 print(f'R-squared (R^2): {r2}')
-                #calculateval(y_pred, y_test)
+                Acc,ThreatS,Summary_AR,Missing_ar,prec=calculateval(y_pred, y_test)
                 with open(csv_file_path, mode='a', newline='') as file:
                     writer = csv.writer(file)
-                    writer.writerow([n_neighbors, current_features, adjusted_r2, rmse, r2,current_performance])
+                    writer.writerow([n_neighbors,current_features, adjusted_r2, rmse, r2,current_performance,Acc,ThreatS,Summary_AR,Missing_ar,prec])
                     # Compare performance to baseline and update the feature list
                 if baseline_performance is None:
                     print(f"Setting baseline performance to {current_performance} as it's the first comparison")
