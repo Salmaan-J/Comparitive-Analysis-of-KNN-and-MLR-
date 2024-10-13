@@ -21618,3 +21618,23 @@ Model/__pycache__/Input.cpython-312.pyc
 Model/__pycache__/ML.cpython-312.pyc
 Model/KNN.pkl
 Dataset/Final_dataset.csv
+Dataset/filtered_data_x2.csv
+Dataset/filtered_data_y2.csv
+Dataset/model_performance KNN 2.csv
+Dataset/model_performance KNN 4.csv
+Dataset/model_performance KNN 6.csv
+Dataset/model_performance KNN 8.csv
+Dataset/model_performance MLR.csv
+Dataset/sorted_correlations.csv
+Dataset/Temp dataset.xlsx
+Dataset/Temp_dataset.csv
+Dataset/filtered_data_x2.csv
+Dataset/filtered_data_y2.csv
+Dataset/model_performance KNN 2.csv
+Dataset/model_performance KNN 4.csv
+Dataset/model_performance KNN 6.csv
+Dataset/model_performance KNN 8.csv
+Dataset/model_performance MLR.csv
+Dataset/sorted_correlations.csv
+Dataset/Temp dataset.xlsx
+Dataset/Temp_dataset.csv
