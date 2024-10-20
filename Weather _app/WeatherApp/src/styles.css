@@ -1,0 +1,79 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: #384B70;
+    --secondary-color: #507687;
+    --third-color: #e74c3c;    /* Red */
+    --background-color: #B8001F;/* Light Gray */
+    --text-color: #FCFAEE;      /* Dark Blue */
+    --shadow-dark:rgba(0,0,0,0.3);
+    --shadow-light:rgba(255,255,255,0.1);
+  }
+
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+
+
+  }
+
+  body{
+    font-size: 16px;
+    font-family: 'Arial, sans-serif';
+    width: 100%;
+    height: 100vh;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content:  left; /* This pushes the weatehr to the left*/
+    align-items: center;
+  }
+  .container{
+    width: 400px;
+    height: 80vh;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px var(--shadow-dark);
+
+  }
+
+  .upper-data{
+    position:relative ;
+    overflow: hidden;
+    width: 100%;
+    height: 50%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+
+  .upper-data img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height:100%
+  }
+
+  .weather-data{
+    position: relative;
+    z-index:1 ;
+    width:100% ;
+    height: 100%;
+    background-color: var(--shadow-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+  .location{
+    color: var(--text-color);
+    text-align:center;
+    font-size: 1.2em;
+  }
+
+  .tempreture{
+    color: var(--text-color);
+    font-size: 4em;
+    text-align: center ;
+    font-weight: 900;
+  }

@@ -1,6 +1,7 @@
 import csv
 import os
 import joblib
+import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
@@ -117,7 +118,6 @@ def KNN(x_train, y_train, x_test, y_test,input):
                 rmse = root_mean_squared_error(y_test,y_pred)
                 print(current_performance)
                 r3=rmse *rmse
-                print(r3)
                 adjusted_r2 = 1 - (1 - r2) * (len(y_test) - 1) / (len(y_test) - len(current_features) - 1)
                 # Print performance metrics
                 print(f"Evaluating feature: {feature}")
@@ -146,6 +146,7 @@ def KNN(x_train, y_train, x_test, y_test,input):
         
     print(f"Selected features so far: {master_feature_list}")
     final_knn_model = KNeighborsRegressor(n_neighbors)
+    joblib.dump(final_knn_model, 'knn_model.pkl')
     final_knn_model.fit(x_train[master_feature_list], y_train)
     final_y_pred = final_knn_model.predict(x_test[master_feature_list])
     current_performance = mean_squared_error(y_test, final_y_pred)
@@ -159,9 +160,11 @@ def KNN(x_train, y_train, x_test, y_test,input):
     print(f'Root Mean Squared Error (RMSE): {rmse}')
     print(f'Mean Squared Error (MSE): {current_performance}')
     print(f'R-squared (R^2): {r2}')
-    #final_y_pred.to_csv("Final_y_pred.csv", index=False)
-    print(final_y_pred)
-    y_array = y_test.values
-    print(y_array)
+
+    # Convert to DataFrame    
+    df = pd.DataFrame(final_y_pred)
+    # Write to CSV
+    df.to_csv('predicted_rainfall.csv', index=False)
+   
     calculateval(final_y_pred, y_test)
  

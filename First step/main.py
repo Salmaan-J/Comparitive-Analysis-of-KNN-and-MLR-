@@ -33,7 +33,10 @@ def Model_TestingKNN():
     #print(y)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
     x_test_norm,x_train_norm = Input.data_norm(x_train,x_test)
-    ML.KNN(x_train_norm,y_train,x_test_norm,y_test,8)#Changes KNN over each run
+    df = pd.DataFrame(y_test)
+    print(df)
+    df.to_csv('Actual_rainfall.csv', index=False)
+    ML.KNN(x_train_norm,y_train,x_test_norm,y_test,4)#Changes KNN over each run
 
 
 
@@ -54,7 +57,7 @@ def Model_TestingMLR():
         # Columns to convert to float
     x = x.astype(float)
     # Convert the X columns to float
-    x,y=Input.data_cleaning(x,y)
+    x,y=Input.data_cleaning(x,y) 
     #print(x)
     #print(y)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
