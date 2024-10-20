@@ -25,7 +25,7 @@
     height: 100vh;
     background-color: var(--primary-color);
     display: flex;
-    justify-content:  left; /* This pushes the weatehr to the left*/
+    justify-content:  flex-start; /* This pushes the weatehr to the left*/
     align-items: center;
   }
   .container{
@@ -63,7 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
+    flex-direction: column;
   }
   .location{
     color: var(--text-color);
@@ -77,3 +77,59 @@
     text-align: center ;
     font-weight: 900;
   }
+
+  .more-info-label{
+    color: var(--text-color);
+  }
+  .more-info-container{
+  flex: 1;
+  background-color: var(--shadow-light);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius:20px ;
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  }
+
+  .info-block{
+  width: 50%;
+  display: flex; 
+  flex-direction: row;
+  }
+.more-block-label{
+  width: 50%;
+  display:flex ;
+  font-size: 16px; /* Adjust as needed */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.info-block-label img{
+  width: 2em;
+}
+
+.info-block-label span{
+  color: var(--text-color);
+  font-size: 0.8em;
+  
+}
+.info-block-value{
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  align-items:center;
+  color: var(--text-color);
+}
+
+.lower-data{
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 50%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 1em;
+  display: flex;
+  flex-direction:column;
+}
