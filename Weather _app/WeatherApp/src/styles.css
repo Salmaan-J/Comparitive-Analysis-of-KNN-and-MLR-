@@ -1,128 +1,130 @@
-/* You can add global styles to this file, and also import other style files */
 :root {
-    --primary-color: #384B70;
-    --secondary-color: #507687;
-    --third-color: #e74c3c;    /* Red */
-    --background-color: #B8001F;/* Light Gray */
-    --text-color: #FCFAEE;      /* Dark Blue */
-    --shadow-dark:rgba(0,0,0,0.3);
-    --shadow-light:rgba(255,255,255,0.1);
-  }
+  --primary-color: #384B70;
+  --secondary-color: #507687;
+  --third-color: #e74c3c;    /* Red */
+  --background-color: #B8001F;/* Light Gray */
+  --text-color: #FCFAEE;      /* Dark Blue */
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+  --shadow-light: rgba(255, 255, 255, 0.1);
+}
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  *{
-    margin:0;
-    padding:0;
-    box-sizing: border-box;
+body {
+  font-size: 16px;
+  font-family: 'Arial, sans-serif';
+  width: 100%;
+  height: 100vh;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: flex-start; /* Pushes the weather to the left */
+  align-items: center;
+}
 
+.container {
+  width: 400px;
+  height: 80vh;
+  background-color: var(--secondary-color);
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px var(--shadow-dark);
+}
 
-  }
+.upper-data {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 50%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
 
-  body{
-    font-size: 16px;
-    font-family: 'Arial, sans-serif';
-    width: 100%;
-    height: 100vh;
-    background-color: var(--primary-color);
-    display: flex;
-    justify-content:  flex-start; /* This pushes the weatehr to the left*/
-    align-items: center;
-  }
-  .container{
-    width: 400px;
-    height: 80vh;
-    background-color: var(--secondary-color);
-    border-radius: 20px;
-    box-shadow: 10px 10px 10px var(--shadow-dark);
+.upper-data img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
-  }
+.weather-data {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: var(--shadow-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
-  .upper-data{
-    position:relative ;
-    overflow: hidden;
-    width: 100%;
-    height: 50%;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-  }
+.location {
+  color: var(--text-color);
+  text-align: center;
+  font-size: 1.2em;
+}
 
-  .upper-data img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height:100%
-  }
+.tempreture {
+  color: var(--text-color);
+  font-size: 4em;
+  text-align: center;
+  font-weight: 900;
+}
 
-  .weather-data{
-    position: relative;
-    z-index:1 ;
-    width:100% ;
-    height: 100%;
-    background-color: var(--shadow-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-  .location{
-    color: var(--text-color);
-    text-align:center;
-    font-size: 1.2em;
-  }
+.more-info-label {
+  color: var(--text-color);
+  margin-bottom: 1em;
+}
 
-  .tempreture{
-    color: var(--text-color);
-    font-size: 4em;
-    text-align: center ;
-    font-weight: 900;
-  }
-
-  .more-info-label{
-    color: var(--text-color);
-  }
-  .more-info-container{
+.more-info-container {
   flex: 1;
   background-color: var(--shadow-light);
   border-bottom-left-radius: 20px;
-  border-bottom-right-radius:20px ;
+  border-bottom-right-radius: 20px;
   margin-top: 1em;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  }
+}
 
-  .info-block{
+.info-block {
   width: 50%;
-  display: flex; 
+  display: flex;
   flex-direction: row;
-  }
-.more-block-label{
+  align-items: center;
+}
+
+.info-block-label {
   width: 50%;
-  display:flex ;
-  font-size: 16px; /* Adjust as needed */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.info-block-label img{
-  width: 2em;
+
+.info-block-label img {
+  width: 3em;
 }
 
-.info-block-label span{
+.info-block-label span {
   color: var(--text-color);
   font-size: 0.8em;
-  
 }
-.info-block-value{
+
+.info-block-value {
   width: 50%;
   display: flex;
   justify-content: flex-start;
-  align-items:center;
+  align-items: center;
   color: var(--text-color);
+  font-size: 1.2em;
 }
 
-.lower-data{
+.lower-data {
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -131,5 +133,10 @@
   border-top-right-radius: 20px;
   padding: 1em;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
+}
+
+
+.rainfall-graph-container {
+
 }
