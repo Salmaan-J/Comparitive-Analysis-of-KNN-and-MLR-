@@ -38,6 +38,33 @@ body {
   max-width: 1200px;        /* Limit the width */
   padding: 1em;
 }
+.weatherwise-container {
+  position: fixed; /* Allows you to position it relative to the nearest positioned ancestor */
+  top: 20px; /* Adjust the distance from the top */
+  right: 1220px; /* Adjust the distance from the right */
+  width: 320px; /* Set the width of the container */
+  height: 50px; /* Set the height of the container */
+  background-color: var(--secondary-color); /* Match the container's background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px var(--shadow-dark); /* Add shadow for depth */
+  z-index: 10; /* Ensure it appears above other elements */
+  display: flex;
+  justify-content: center; /* Center the heading horizontally */
+  align-items: center; /* Center the ading vertically */
+}
+.upper-data {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 50%;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+.weatherwise-container h2 {
+  color: var(--text-color); /* Match text color */
+  font-size: 1.5em; /* Adjust font size */
+  text-align: center; /* Center the text */
+}
 .h1{
   color: var(--text-color);
 }
@@ -141,26 +168,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-.weatherwise-container {
-  position: right; /* Allows you to position it relative to the nearest positioned ancestor */
-  top: 20px; /* Adjust the distance from the top */
-  right: 20px; /* Adjust the distance from the right */
-  width: 300px; /* Set the width of the container */
-  height: 50px; /* Set the height of the container */
-  background-color: var(--secondary-color); /* Match the container's background color */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 10px var(--shadow-dark); /* Add shadow for depth */
-  z-index: 10; /* Ensure it appears above other elements */
-  display: flex;
-  justify-content: center; /* Center the heading horizontally */
-  align-items: center; /* Center the heading vertically */
-}
 
-.weatherwise-container h2 {
-  color: var(--text-color); /* Match text color */
-  font-size: 1.5em; /* Adjust font size */
-  text-align: center; /* Center the text */
-}
 .info-block-label img {
   width: 4em;
   border-radius: 15px; /* Adjust the value to change the roundness */
