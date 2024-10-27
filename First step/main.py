@@ -64,5 +64,5 @@ def Model_TestingMLR():
     x_test_norm,x_train_norm = Input.data_norm(x_train,x_test)
     ML.MLR(x_test_norm,y_test,x_train_norm,y_train)
 
-#Model_TestingMLR()
+Model_TestingMLR()
 Model_TestingKNN()

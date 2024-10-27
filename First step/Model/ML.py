@@ -135,7 +135,7 @@ def KNN(x_train, y_train, x_test, y_test,input):
                     print(f"Setting baseline performance to {current_performance} as it's the first comparison")
                     baseline_performance = current_performance
                 
-                if current_performance < baseline_performance:
+                if current_performance < baseline_performance :
                     print(f"Adding feature {feature} and n_neighbors={n_neighbors} improves performance: {current_performance} < {baseline_performance}")
                     master_feature_list.append(feature)  # Keep the feature
                     baseline_performance = current_performance
