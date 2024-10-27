@@ -1,0 +1,183 @@
+:root {
+    --primary-color: #384B70;
+    --secondary-color: #507687;
+    --third-color: #B9E5E8;    /* Red */
+    --background-color: #7AB2D3;
+    --text-color: #FCFAEE;      
+    --shadow-dark: rgba(0, 0, 0, 0.3);
+    --shadow-light: rgba(255, 255, 255, 0.1);
+    --main-font-family: 'Arial', sans-serif;
+  }
+  
+  * {
+    margin: 0;/* maintain consistancy between browsers*/
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-size: 16px;
+    font-family: var(--main-font-family);
+    width: 100%;
+    height: 100vh;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center; /* Centering the content horizontally */
+    align-items: center; /* Vertically aligning the containers */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  .main-wrapper {
+    display: flex;                /* Display containers side by side */
+    flex-direction: row;          /* Ensure containers are placed in a row */
+    justify-content: flex-start; /* Aligns the containers to the left */
+    align-items: flex-start;      /* Ensures containers stay at the top */
+    gap: 20px; 
+    width: 100%;            /* Allows both containers to take their natural widths */
+    max-width: 1200px;        /* Limit the width */
+    padding: 1em;
+  }
+  .h1{
+    color: var(--text-color);
+  }
+  .container{
+    width: 400px;
+    height: 80vh;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px var(--shadow-dark);
+    display: flex;
+    flex-direction: column;
+  }
+  .second-container {
+    width: 1000px;
+    height: 80vh;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px var(--shadow-dark);
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+  }
+  
+  .mainpage {
+    position: center;
+    width: 400px;
+    height: 80vh;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px var(--shadow-dark);
+  }
+
+  .weather-data {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: var(--shadow-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .location {
+    color: var(--text-color);
+    text-align: center;
+    font-size: 1.2em;
+  }
+  
+  .tempreture {
+    color: var(--text-color);
+    font-size: 4em;
+    text-align: center;
+    font-weight: 900;
+  }
+  
+  .more-info-label {
+    color: var(--text-color);
+    margin-bottom: 1em;
+  }
+  
+  .more-info-container {
+    flex: 1;
+    background-color: var(--shadow-light);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .info-block {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .info-block-label {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .info-block-label img {
+    width: 4em;
+    border-radius: 15px; /* Adjust the value to change the roundness */
+    overflow: hidden; /* Ensures any overflow is hidden */
+    display: block; /* Ensures the image behaves properly within a block context */
+  }
+  
+  .info-block-label span {
+    color: var(--text-color);
+    font-size: 0.8em;
+  }
+  
+  .info-block-value {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 1.2em;
+  }
+  
+  .lower-data {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 60%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+  .chart-container {
+    background-color: var(--shadow-light); /* Background color for better visibility */
+    border-radius: 8px; /* Rounded corners */
+    margin: auto; /* Center the container */
+    padding: 20px; /* Optional padding */
+    width: 100%; /* Full width */
+    
+    height: 400px; /* Fixed height */
+    box-sizing: border-box; /* Ensure padding is included in width/height */
+
+ 
+
+}
+
+/* Styles specifically for the canvasjs-chart */
+canvasjs-chart {
+  
+    width: 100% !important; /* Ensure the chart takes full width of the container */
+    height: 100% !important; /* Ensure the chart takes full height of the container */
+}

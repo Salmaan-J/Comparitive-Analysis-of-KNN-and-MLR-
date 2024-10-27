@@ -1,51 +1,76 @@
-<div class="container">
-    <div class="upper-data">
-        <img src="Images/Sun.jpg">
 
-        <div class="weather-data">
-            <div class="location">Basil</div>
-            <div class="tempreture">{{ 14.4 | number:'1.0-0' }}°C</div>
-        </div>
+<!doctype html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../styles.css">
+
+    <div class="weatherwise-container">
+        <h2>WeatherwiseML</h2>   
     </div>
-
-    <div class="lower-data">
-        <div class="More-info-label" *ngIf="rainfall !== undefined">
-            <!-- Additional information could be displayed here -->
-        </div>
-        <div class="more-info-container">
-            <div class="info-block">
-                <div class="info-block-label">
-                    <img src="Images/min.jpg">
-                    <span>Min</span>
-                </div>
-                <div class="info-block-value">10°C</div>
-            </div>
-            <div class="info-block">
-                <div class="info-block-label">
-                    <img src="Images/max.jpg">
-                    <span>Max</span>
-                </div>
-                <div class="info-block-value">20°C</div>
-            </div>
-            <div class="info-block">
-                <div class="info-block-label">
-                    <img src="Images/Humidity.jpg">
-                    <span>Humidity</span>
-                </div>
-                <div class="info-block-value">77%</div>
-            </div>
-            <div class="info-block">
-                <div class="info-block-label">
-                    <img src="Images/wind.png">
-                    <span>Wind</span>
-                </div>
-                <div class="info-block-value"><span>11 km/h</span></div>
+    <div class="main-wrapper">
+        <div class="container">
+        <div class="upper-data">
+            <img src="Images/Sun.jpg">
+            <div class="weather-data">
+                <div class="location">Basil</div>
+                <div class="tempreture">{{  temperature  | number:'1.0-0' }}°C</div>
             </div>
         </div>
-    </div> 
-    <h1>Weather </h1>
-<app-rainfall-graph [predictedRainfall]="predictedRainfall ">
-</app-rainfall-graph>
+    </div>   
 
-
-<router-outlet />
+    <div class="second-container">
+        <h1 class = "h1">Weather Conditions</h1>
+        <div class="upper-data">
+            <div class="chart-container" style="width:100%; height:400px;">
+            <canvasjs-chart [options]="chartOptions"></canvasjs-chart>
+            </div>            
+        </div>
+        <div class="lower-data">
+            <div class="more-info-container">
+                <div class="info-block">
+                    <div class="info-block-label">
+                        <img src="Images/min.jpg">
+                        <span>Min</span>
+                    </div>
+                    <div class="info-block-value">{{ min_temp | number:'1.0-0' }}°C</div>
+                </div>
+                <div class="info-block">
+                    <div class="info-block-label">
+                        <img src="Images/max.jpg">
+                        <span>Max</span>
+                    </div>
+                    <div class="info-block-value">{{ max_temp | number:'1.0-0' }}°C</div>
+                </div>
+                <div class="info-block">
+                    <div class="info-block-label">
+                        <img src="Images/Humidity.jpg">
+                        <span>Wind Direction</span>
+                    </div>
+                    <div class="info-block-value">{{ direction}}</div>
+                </div>
+                <div class="info-block">
+                    <div class="info-block-label">
+                        <img src="Images/wind.png">
+                        <span>Wind</span>
+                    </div>
+                    <div class="info-block-value">
+                        <span>{{windSpeed | number:'1.0-0'}} KM/H</span></div>
+                        </div>
+                <div class="info-block">
+                    <div class="info-block-label">
+                        <img src="Images/UV Radiation.jpg">
+                        <span>UV Radiation</span>
+                    </div>
+                    <div class="info-block-value"><span>{{ uvRadiation | number:'1.0-0' }} Watt/m²</span></div>
+                </div>
+                <div class="info-block">
+                    <div class="info-block-label">
+                        <img src="Images/cloudicon.jpg">
+                        <span> Cloud Cover</span>
+                    </div>
+                    <div class="info-block-value"><span>{{ cloudCover| number:'1.0-0' }}%</span></div>
+                </div>
+            </div>
+        </div> 
+                
+    </div>

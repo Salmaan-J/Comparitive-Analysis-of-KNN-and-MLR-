@@ -1,38 +1,74 @@
 :root {
   --primary-color: #384B70;
   --secondary-color: #507687;
-  --third-color: #e74c3c;    /* Red */
-  --background-color: #B8001F;/* Light Gray */
-  --text-color: #FCFAEE;      /* Dark Blue */
+  --third-color: #B9E5E8;    /* Red */
+  --background-color: #7AB2D3;
+  --text-color: #FCFAEE;      
   --shadow-dark: rgba(0, 0, 0, 0.3);
   --shadow-light: rgba(255, 255, 255, 0.1);
+  --main-font-family: 'Arial', sans-serif;
 }
 
 * {
-  margin: 0;
+  margin: 0;/* maintain consistancy between browsers*/
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
   font-size: 16px;
-  font-family: 'Arial, sans-serif';
+  font-family: var(--main-font-family);
   width: 100%;
   height: 100vh;
   background-color: var(--primary-color);
   display: flex;
-  justify-content: flex-start; /* Pushes the weather to the left */
-  align-items: center;
+  justify-content: center; /* Centering the content horizontally */
+  align-items: center; /* Vertically aligning the containers */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+.main-wrapper {
+  display: flex;                /* Display containers side by side */
+  flex-direction: row;          /* Ensure containers are placed in a row */
+  justify-content: flex-start; /* Aligns the containers to the left */
+  align-items: flex-start;      /* Ensures containers stay at the top */
+  gap: 20px; 
+  width: 100%;            /* Allows both containers to take their natural widths */
+  max-width: 1200px;        /* Limit the width */
+  padding: 1em;
+}
+.h1{
+  color: var(--text-color);
+}
+.container{
+  width: 400px;
+  height: 80vh;
+  background-color: var(--secondary-color);
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px var(--shadow-dark);
+  display: flex;
+  flex-direction: column;
+}
+.second-container {
+  width: 1000px;
+  height: 80vh;
+  background-color: var(--secondary-color);
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px var(--shadow-dark);
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
 }
 
-.container {
+.mainpage {
+  position: center;
   width: 400px;
   height: 80vh;
   background-color: var(--secondary-color);
   border-radius: 20px;
   box-shadow: 10px 10px 10px var(--shadow-dark);
 }
-
 .upper-data {
   position: relative;
   overflow: hidden;
@@ -105,9 +141,31 @@ body {
   justify-content: center;
   align-items: center;
 }
+.weatherwise-container {
+  position: right; /* Allows you to position it relative to the nearest positioned ancestor */
+  top: 20px; /* Adjust the distance from the top */
+  right: 20px; /* Adjust the distance from the right */
+  width: 300px; /* Set the width of the container */
+  height: 50px; /* Set the height of the container */
+  background-color: var(--secondary-color); /* Match the container's background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px var(--shadow-dark); /* Add shadow for depth */
+  z-index: 10; /* Ensure it appears above other elements */
+  display: flex;
+  justify-content: center; /* Center the heading horizontally */
+  align-items: center; /* Center the heading vertically */
+}
 
+.weatherwise-container h2 {
+  color: var(--text-color); /* Match text color */
+  font-size: 1.5em; /* Adjust font size */
+  text-align: center; /* Center the text */
+}
 .info-block-label img {
-  width: 3em;
+  width: 4em;
+  border-radius: 15px; /* Adjust the value to change the roundness */
+  overflow: hidden; /* Ensures any overflow is hidden */
+  display: block; /* Ensures the image behaves properly within a block context */
 }
 
 .info-block-label span {
@@ -137,6 +195,3 @@ body {
 }
 
 
-.rainfall-graph-container {
-
-}

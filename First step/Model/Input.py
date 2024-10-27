@@ -1,11 +1,10 @@
 #########Imports##########
-import sqlite3
 import sys
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 import pandas as pd
-
+import joblib
 ################ ###################
 ###### DATA INPUT ##########
 def Read_CSV():  
@@ -87,10 +86,11 @@ def data_norm(x_train,x_test):
 
 # Feature Normalization
     scaler = MinMaxScaler()  # Initialize the MinMaxScaler for normalization
-    #print(x_train.columns)
+    print(x_train.columns)
     x_train_norm = scaler.fit_transform(x_train)  # Fit the scaler on the training data and transform it
     x_test_norm = scaler.transform(x_test)  # Transform the testing data using the already fitted scaler
     print("Complete Data Normilization")
+    joblib.dump(scaler, 'scaler.gz')
     x_train_norm= pd.DataFrame(x_train_norm, columns=x_train.columns)
     x_test_norm = pd.DataFrame(x_test_norm, columns=x_train.columns)
     #print(x_train_norm.columns)

@@ -1,6 +1,6 @@
 import csv
 import os
-import joblib
+import pickle
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -71,7 +71,7 @@ def MLR(x_train,y_train,x_test,y_test):
     mlr_model = LinearRegression()
     mlr_model.fit(x_train[master_feature_list], y_train)
     #Evaluate on validation data
-    #Use cross-validation to evaluate the model  
+    #could use cross-validation to evaluate the model  
     y_pred = mlr_model.predict(x_test[master_feature_list])
     current_performance = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
@@ -146,8 +146,9 @@ def KNN(x_train, y_train, x_test, y_test,input):
         
     print(f"Selected features so far: {master_feature_list}")
     final_knn_model = KNeighborsRegressor(n_neighbors)
-    joblib.dump(final_knn_model, 'knn_model.pkl')
     final_knn_model.fit(x_train[master_feature_list], y_train)
+    with open('Second Step/knn_model.pkl', 'wb') as f:
+        pickle.dump(final_knn_model, f)
     final_y_pred = final_knn_model.predict(x_test[master_feature_list])
     current_performance = mean_squared_error(y_test, final_y_pred)
     r2 = r2_score(y_test, final_y_pred)
